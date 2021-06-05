@@ -6,6 +6,8 @@ namespace Core
 {
     public class ProduceUnitExecutor : CommandExecutorBase<IProduceUnitCommand>
     {
+        private readonly float _offset = 2.0f;
+
         public override void ExecuteConcreteCommand(IProduceUnitCommand command)
         {
             if (command.UnitPrefab == null)
@@ -14,7 +16,7 @@ namespace Core
                 return;
             }
 
-            Instantiate(command.UnitPrefab, transform.position, Quaternion.identity);
+            Instantiate(command.UnitPrefab, transform.position + Vector3.forward * _offset, Quaternion.identity, transform.parent);
         }
     }
 }

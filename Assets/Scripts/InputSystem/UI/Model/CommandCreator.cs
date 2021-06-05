@@ -48,7 +48,7 @@ namespace InputSystem
         private void HandleCurrentGroundPositionChanged(Vector3 onSelected)
         {
             onSelected = _currentGroundPosition.Value;
-            _onCreate?.Invoke(_context.Inject(new MoveUnitCommand(onSelected)));
+            _onCreate?.Invoke(_context.Inject(new MoveUnitCommand(onSelected)));            
         }
 
         protected override void CreateSpecificCommand(Action<IMoveCommand> onCreate)

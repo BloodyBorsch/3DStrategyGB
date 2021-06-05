@@ -8,7 +8,7 @@ namespace InputSystem
 {    
     public class ProduceUnitCommand : IProduceUnitCommand
     {
-        [InjectAssetAttributes("Ellen")] private GameObject _unitPrefab;        
+        [InjectAssetAttributes("Chomper")] private GameObject _unitPrefab;        
         public GameObject UnitPrefab => _unitPrefab;
     }
 
