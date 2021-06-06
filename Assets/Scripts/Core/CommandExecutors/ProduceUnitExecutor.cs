@@ -8,7 +8,7 @@ namespace Core
     {
         private readonly float _offset = 2.0f;
 
-        public override void ExecuteConcreteCommand(IProduceUnitCommand command)
+        protected override void ExecuteConcreteCommand(IProduceUnitCommand command)
         {
             if (command.UnitPrefab == null)
             {
@@ -17,6 +17,11 @@ namespace Core
             }
 
             Instantiate(command.UnitPrefab, transform.position + Vector3.forward * _offset, Quaternion.identity, transform.parent);
+        }
+
+        protected override void AnimationLocomotion()
+        {
+            
         }
     }
 }

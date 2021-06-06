@@ -24,16 +24,15 @@ namespace InputSystem
 
     public class PatrolUnitCommand : IPatrolCommand
     {
-        public Vector3 FirstPosition { get; set; }
+        public Vector3 FirstPosition { get; }
 
         public Vector3 SecondPosition { get; }
 
-        public PatrolUnitCommand(Vector3 targetPosition)
-        {            
+        public PatrolUnitCommand(Vector3 targetPosition, Vector3 firstPosition)
+        {
+            FirstPosition = firstPosition;
             SecondPosition = targetPosition;
         }
-
-        public Vector3 SetFirstPosition(Vector3 position) => FirstPosition = position;
     }
 
     public class AttackUnitCommand : IAttackCommand

@@ -21,9 +21,11 @@ namespace Model
             Container.Bind<CommandCreatorBase<IPatrolCommand>>().To<PatrolCommandCreator>().AsTransient();
             Container.Bind<CommandCreatorBase<IAttackCommand>>().To<AttackCommandCreator>().AsTransient();
             Container.Bind<CommandCreatorBase<IStopCommand>>().To<StopCommandCreator>().AsTransient();
+            Container.Bind<IAwaitable<Vector3>>().FromInstance(_currentGroundPosition).AsSingle();
+            Container.Bind<IAwaitable<ISelectableItem>>().FromInstance(_currentSelectedItem).AsSingle();
             Container.Bind<ButtonPanel>().AsTransient();
-            Container.Bind<Vector3Value>().FromInstance(_currentGroundPosition).AsCached();
-            Container.Bind<SelectedItem>().FromInstance(_currentSelectedItem).AsCached();
+            Container.Bind<Vector3Value>().FromInstance(_currentGroundPosition).AsSingle();
+            Container.Bind<SelectedItem>().FromInstance(_currentSelectedItem).AsSingle();
         }
     }
 }

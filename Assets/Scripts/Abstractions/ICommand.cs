@@ -25,10 +25,8 @@ namespace Abstractions
 
     public interface IPatrolCommand : ICommand
     {
-        Vector3 FirstPosition { get; set; }
+        Vector3 FirstPosition { get; }
         Vector3 SecondPosition { get; }
-
-        Vector3 SetFirstPosition(Vector3 position);
     }
 
     public interface IStopCommand : ICommand

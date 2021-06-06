@@ -19,9 +19,16 @@ namespace InputSystem
 
         private void Start()
         {
-            _item.OnSelected += SetButtons;
+            _item.OnSelected += HandleSelectionChanged;
             SetButtons(_item.Value);
             _view.OnClick += HandleClick;            
+        }
+
+        private void HandleSelectionChanged(ISelectableItem value)
+        {
+            value = _item.Value;
+            buttonPanel.HandleSelectionChanged();
+            SetButtons(_item.Value);
         }
 
         private void SetButtons(ISelectableItem value)

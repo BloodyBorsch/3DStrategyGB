@@ -6,9 +6,14 @@ namespace Core
 {
     public class StopCommandExecutor : CommandExecutorBase<IStopCommand>
     {
-        public override void ExecuteConcreteCommand(IStopCommand command)
+        protected override void ExecuteConcreteCommand(IStopCommand command)
         {
-            Debug.Log("Отановка");
+            Debug.Log("Оcтановка");
+        }
+
+        protected override void AnimationLocomotion()
+        {
+            
         }
     }
 }

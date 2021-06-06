@@ -6,9 +6,14 @@ namespace Core
 {
     public class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>
     {
-        public override void ExecuteConcreteCommand(IAttackCommand command)
+        protected override void ExecuteConcreteCommand(IAttackCommand command)
         {
             Debug.Log("Атака");
+        }
+
+        protected override void AnimationLocomotion()
+        {
+            
         }
     }
 }

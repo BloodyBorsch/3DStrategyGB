@@ -10,6 +10,7 @@ namespace Core
         [SerializeField] private float _health;
         [SerializeField] private float _maxHealth;
 
+        public Vector3 Position => transform.position;
         public Sprite Icon => _icon;
         public float Health => _health;
         public float MaxHealth => _maxHealth;

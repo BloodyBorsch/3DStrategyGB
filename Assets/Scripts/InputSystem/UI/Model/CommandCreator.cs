@@ -1,5 +1,6 @@
 ﻿using Abstractions;
 using System;
+using System.Threading;
 using UnityEngine;
 using Utils;
 using Zenject;
@@ -8,7 +9,7 @@ using Zenject;
 namespace InputSystem
 {
     public abstract class CommandCreatorBase<T> where T : ICommand
-    {
+    {       
         public void CreateCommand(ICommandExecutor commandExecutor, Action<T> onCreate)
         {
             if (commandExecutor as CommandExecutorBase<T>)
@@ -17,105 +18,84 @@ namespace InputSystem
             }
         }
 
+        public virtual void CancelCommand() { }
+
         protected abstract void CreateSpecificCommand(Action<T> onCreate);
     }
 
-    public class ProduceUnitCommandCreator : CommandCreatorBase<IProduceUnitCommand>
+    public abstract class CancelableCommandCreatorBase<T, TParam> : CommandCreatorBase<T> where T : ICommand
     {
-        [Inject] private AssetsContext _context;
+        protected CancellationTokenSource _cancellationSource;
 
-        protected override void CreateSpecificCommand(Action<IProduceUnitCommand> onCreate)
+        [Inject] protected AssetsContext _context;
+        [Inject] protected Vector3Value _currentGroundPosition;
+        [Inject] protected SelectedItem _selectedItem;
+        [Inject] private IAwaitable<TParam> _param;
+
+        protected override async void CreateSpecificCommand(Action<T> onCreate)
         {
+            _cancellationSource = new CancellationTokenSource();
 
-            onCreate?.Invoke(_context.Inject(new ProduceUnitCommand()));
+            try
+            {
+                var param = await _param.AsTask().WithCancellation(_cancellationSource.Token);
+                onCreate?.Invoke(_context.Inject(CreateSpecificCommand(param)));
+            }
+            catch (OperationCanceledException e)
+            {
+                Debug.Log("Operation Canceled");
+            }
+        }
+
+        protected abstract T CreateSpecificCommand(TParam param);
+
+        public override void CancelCommand()
+        {
+            if (_cancellationSource == null) return;
+
+            _cancellationSource.Cancel();
+            _cancellationSource.Dispose();
+            _cancellationSource = null;
         }
     }
 
-    public class MoveCommandCreator : CommandCreatorBase<IMoveCommand>
-    {
-        [Inject] private AssetsContext _context;
-
-        private Action<IMoveCommand> _onCreate;
-        private Vector3Value _currentGroundPosition;
-
-        [Inject]
-        private void Init(Vector3Value currentGroundPosition)
+    public class ProduceUnitCommandCreator : CancelableCommandCreatorBase<IProduceUnitCommand, ISelectableItem>
+    {       
+        protected override IProduceUnitCommand CreateSpecificCommand(ISelectableItem item)
         {
-            _currentGroundPosition = currentGroundPosition;
-            currentGroundPosition.OnSelected += HandleCurrentGroundPositionChanged;
-        }
-
-        private void HandleCurrentGroundPositionChanged(Vector3 onSelected)
-        {
-            onSelected = _currentGroundPosition.Value;
-            _onCreate?.Invoke(_context.Inject(new MoveUnitCommand(onSelected)));            
-        }
-
-        protected override void CreateSpecificCommand(Action<IMoveCommand> onCreate)
-        {
-            _onCreate = onCreate;
+            return new ProduceUnitCommand();
         }
     }
 
-    public class PatrolCommandCreator : CommandCreatorBase<IPatrolCommand>
-    {
-        [Inject] private AssetsContext _context;
-
-        private Action<IPatrolCommand> _onCreate;
-        private Vector3Value _currentGroundPosition;
-
-        [Inject]
-        private void Init(Vector3Value currentGroundPosition)
+    public class MoveCommandCreator : CancelableCommandCreatorBase<IMoveCommand, Vector3>
+    {         
+        protected override IMoveCommand CreateSpecificCommand(Vector3 param)
         {
-            _currentGroundPosition = currentGroundPosition;
-            currentGroundPosition.OnSelected += HandleCurrentGroundPositionChanged;
-        }
-
-        private void HandleCurrentGroundPositionChanged(Vector3 onSelected)
-        {
-            onSelected = _currentGroundPosition.Value;
-            _onCreate?.Invoke(_context.Inject(new PatrolUnitCommand(onSelected)));
-        }
-
-        protected override void CreateSpecificCommand(Action<IPatrolCommand> onCreate)
-        {
-            _onCreate = onCreate;
+            return new MoveUnitCommand(param);
         }
     }
 
-    public class AttackCommandCreator : CommandCreatorBase<IAttackCommand>
+    public class PatrolCommandCreator : CancelableCommandCreatorBase<IPatrolCommand, Vector3>
     {
-        [Inject] private AssetsContext _context;
-
-        private Action<IAttackCommand> _onCreate;
-        private SelectedItem _currentTarget;
-
-        [Inject]
-        private void Init(SelectedItem currentGroundPosition)
+        protected override IPatrolCommand CreateSpecificCommand(Vector3 param)
         {
-            _currentTarget = currentGroundPosition;
-            currentGroundPosition.OnSelected += HandleCurrentGroundPositionChanged;
-        }
-
-        private void HandleCurrentGroundPositionChanged(ISelectableItem onSelected)
-        {
-            onSelected = _currentTarget.Value;
-            _onCreate?.Invoke(_context.Inject(new AttackUnitCommand(onSelected)));
-        }
-
-        protected override void CreateSpecificCommand(Action<IAttackCommand> onCreate)
-        {
-            _onCreate = onCreate;
+            return new PatrolUnitCommand(param, _selectedItem.Value.Position);
         }
     }
 
-    public class StopCommandCreator : CommandCreatorBase<IStopCommand>
+    public class AttackCommandCreator : CancelableCommandCreatorBase<IAttackCommand, ISelectableItem>
     {
-        [Inject] private AssetsContext _context;
-
-        protected override void CreateSpecificCommand(Action<IStopCommand> onCreate)
+        protected override IAttackCommand CreateSpecificCommand(ISelectableItem param)
         {
-            onCreate?.Invoke(_context.Inject(new StopUnitCommand()));
+            return new AttackUnitCommand(param);
+        }
+    }
+
+    public class StopCommandCreator : CancelableCommandCreatorBase<IStopCommand, ISelectableItem>
+    {
+        protected override IStopCommand CreateSpecificCommand(ISelectableItem param)
+        {
+            return new StopUnitCommand();
         }
     }
 }

@@ -1,15 +1,40 @@
-﻿using UnityEngine;
-using Abstractions;
+﻿using Abstractions;
+using UnityEngine;
+using Utils;
 
 
 namespace Core
 {
     public class MoveCommandExecutor : CommandExecutorBase<IMoveCommand>
     {
-        public override void ExecuteConcreteCommand(IMoveCommand command)
+        private IMoveCommand _command;
+
+        private float _maxFloat = 1.0f;
+
+        private void Awake()
         {
-            //TODO плавное перемещение во времени
-            transform.position = command.Position;
+            UpdateManager.SubscribeToUpdate(AnimationLocomotion);
+        }
+
+        private void OnDestroy()
+        {
+            UpdateManager.UnsubscribeFromUpdate(AnimationLocomotion);
+        }
+
+        protected override void ExecuteConcreteCommand(IMoveCommand command)
+        {
+            _command = command;            
+            _agent.SetDestination(_command.Position);            
+        }
+
+        protected override void AnimationLocomotion()
+        {
+            if (_animator != null && _command != null)
+            {
+                if (_agent.remainingDistance > _agent.stoppingDistance)
+                    _animator.SetFloat(_speed, _maxFloat);                
+                else _animator.SetFloat(_speed, 0.0f, 0.2f, Time.deltaTime);
+            }
         }
     }
 }
