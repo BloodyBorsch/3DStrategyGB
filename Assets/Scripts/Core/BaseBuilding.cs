@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Core
 {
-    public class BaseBuilding : MonoBehaviour, ISelectableItem
+    public class BaseBuilding : MonoBehaviour, ISelectableItem, IAttackable
     {
         [SerializeField] private Sprite _icon;
         [SerializeField] private float _health;
@@ -14,5 +14,7 @@ namespace Core
         public Sprite Icon => _icon;
         public float Health => _health;
         public float MaxHealth => _maxHealth;
+
+        public GameObject Target => transform.gameObject;
     }
 }

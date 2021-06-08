@@ -11,6 +11,7 @@ namespace InputSystem
 
         [SerializeField] private SelectedItem _currentSelection;
         [SerializeField] private Vector3Value _currentGroundPosition;
+        [SerializeField] private AttackableValue _currentTarget;
 
         protected void Awake()
         {
@@ -30,6 +31,9 @@ namespace InputSystem
                 {
                     var selectableItem = hitInfo.collider.GetComponent<ISelectableItem>();
                     _currentSelection.SetValue(selectableItem);
+
+                    var attackableObject = hitInfo.collider.GetComponent<IAttackable>();
+                    _currentTarget.SetValue(attackableObject);
                 }
                 else _currentSelection.SetValue(null);
             }

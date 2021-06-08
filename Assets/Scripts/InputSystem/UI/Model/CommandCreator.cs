@@ -9,7 +9,11 @@ using Zenject;
 namespace InputSystem
 {
     public abstract class CommandCreatorBase<T> where T : ICommand
-    {       
+    {
+        [Inject] protected AssetsContext _context;
+        [Inject] protected Vector3Value _currentGroundPosition;
+        [Inject] protected SelectedItem _selectedItem;
+
         public void CreateCommand(ICommandExecutor commandExecutor, Action<T> onCreate)
         {
             if (commandExecutor as CommandExecutorBase<T>)
@@ -25,11 +29,8 @@ namespace InputSystem
 
     public abstract class CancelableCommandCreatorBase<T, TParam> : CommandCreatorBase<T> where T : ICommand
     {
-        protected CancellationTokenSource _cancellationSource;
-
-        [Inject] protected AssetsContext _context;
-        [Inject] protected Vector3Value _currentGroundPosition;
-        [Inject] protected SelectedItem _selectedItem;
+        protected CancellationTokenSource _cancellationSource;        
+        
         [Inject] private IAwaitable<TParam> _param;
 
         protected override async void CreateSpecificCommand(Action<T> onCreate)
@@ -59,11 +60,11 @@ namespace InputSystem
         }
     }
 
-    public class ProduceUnitCommandCreator : CancelableCommandCreatorBase<IProduceUnitCommand, ISelectableItem>
+    public class ProduceUnitCommandCreator : CommandCreatorBase<IProduceUnitCommand>
     {       
-        protected override IProduceUnitCommand CreateSpecificCommand(ISelectableItem item)
+        protected override void CreateSpecificCommand(Action<IProduceUnitCommand> onCreate)
         {
-            return new ProduceUnitCommand();
+            onCreate?.Invoke(_context.Inject(new ProduceUnitCommand()));
         }
     }
 
@@ -83,19 +84,19 @@ namespace InputSystem
         }
     }
 
-    public class AttackCommandCreator : CancelableCommandCreatorBase<IAttackCommand, ISelectableItem>
+    public class AttackCommandCreator : CancelableCommandCreatorBase<IAttackCommand, IAttackable>
     {
-        protected override IAttackCommand CreateSpecificCommand(ISelectableItem param)
+        protected override IAttackCommand CreateSpecificCommand(IAttackable param)
         {
             return new AttackUnitCommand(param);
         }
     }
 
-    public class StopCommandCreator : CancelableCommandCreatorBase<IStopCommand, ISelectableItem>
+    public class StopCommandCreator : CommandCreatorBase<IStopCommand>
     {
-        protected override IStopCommand CreateSpecificCommand(ISelectableItem param)
-        {
-            return new StopUnitCommand();
+        protected override void CreateSpecificCommand(Action<IStopCommand> onCreate)
+        {            
+            onCreate?.Invoke(_context.Inject(new StopUnitCommand()));
         }
     }
 }

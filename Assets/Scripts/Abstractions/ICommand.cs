@@ -20,7 +20,7 @@ namespace Abstractions
 
     public interface IAttackCommand : ICommand
     {
-        ISelectableItem Target { get; }
+        IAttackable Target { get; }
     }
 
     public interface IPatrolCommand : ICommand

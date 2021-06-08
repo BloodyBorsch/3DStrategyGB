@@ -9,7 +9,7 @@ namespace Core
         private readonly float _offset = 2.0f;
 
         protected override void ExecuteConcreteCommand(IProduceUnitCommand command)
-        {
+        {     
             if (command.UnitPrefab == null)
             {
                 Debug.LogError("No Prefab");

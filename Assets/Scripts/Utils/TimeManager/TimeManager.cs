@@ -27,7 +27,7 @@ namespace Utils
         public void OnDestroy()
         {
             UpdateManager.UnsubscribeFromUpdate(Execute);
-            _method -= _method;
+            _method = null;
         }
 
         public void UseCoolDown()

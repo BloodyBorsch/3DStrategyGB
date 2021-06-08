@@ -12,6 +12,7 @@ namespace Model
         [SerializeField] private AssetsContext _context;
         [SerializeField] private Vector3Value _currentGroundPosition;
         [SerializeField] private SelectedItem _currentSelectedItem;
+        [SerializeField] private AttackableValue _currentTarget;
 
         public override void InstallBindings()
         {
@@ -23,9 +24,11 @@ namespace Model
             Container.Bind<CommandCreatorBase<IStopCommand>>().To<StopCommandCreator>().AsTransient();
             Container.Bind<IAwaitable<Vector3>>().FromInstance(_currentGroundPosition).AsSingle();
             Container.Bind<IAwaitable<ISelectableItem>>().FromInstance(_currentSelectedItem).AsSingle();
+            Container.Bind<IAwaitable<IAttackable>>().FromInstance(_currentTarget).AsSingle();            
             Container.Bind<ButtonPanel>().AsTransient();
             Container.Bind<Vector3Value>().FromInstance(_currentGroundPosition).AsSingle();
             Container.Bind<SelectedItem>().FromInstance(_currentSelectedItem).AsSingle();
+            Container.Bind<AttackableValue>().FromInstance(_currentTarget).AsSingle();
         }
     }
 }

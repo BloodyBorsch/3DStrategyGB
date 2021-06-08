@@ -8,7 +8,7 @@ namespace Core
     {
         protected override void ExecuteConcreteCommand(IAttackCommand command)
         {
-            Debug.Log("Атака");
+            Debug.Log("Атака" + command.Target);
         }
 
         protected override void AnimationLocomotion()

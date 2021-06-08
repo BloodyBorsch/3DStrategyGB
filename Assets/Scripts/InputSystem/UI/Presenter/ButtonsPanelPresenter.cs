@@ -11,15 +11,15 @@ namespace InputSystem
     public class ButtonsPanelPresenter : MonoBehaviour
     {
         [SerializeField] private ButtonsPanelView _view;
-        [SerializeField] private SelectedItem _item;        
-
+        [Inject] private SelectedItem _item;
+        [Inject] private AttackableValue _target;
         [Inject] private ButtonPanel buttonPanel;
 
         private ISelectableItem _currentSelected;        
 
         private void Start()
         {
-            _item.OnSelected += HandleSelectionChanged;
+            _item.OnSelected += HandleSelectionChanged;            
             SetButtons(_item.Value);
             _view.OnClick += HandleClick;            
         }

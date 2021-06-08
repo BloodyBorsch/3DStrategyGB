@@ -37,9 +37,9 @@ namespace InputSystem
 
     public class AttackUnitCommand : IAttackCommand
     {
-        public ISelectableItem Target { get; }
+        public IAttackable Target { get; }
 
-        public AttackUnitCommand(ISelectableItem obj)
+        public AttackUnitCommand(IAttackable obj)
         {
             Target = obj;
         }

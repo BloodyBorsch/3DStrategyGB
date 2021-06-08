@@ -1,11 +1,12 @@
 using Abstractions;
 using UnityEngine;
+using Zenject;
 
 
 public class SelectedItemPresenter : MonoBehaviour
 {
     [SerializeField] private SelectedItemView _view;
-    [SerializeField] private SelectedItem _item;
+    [Inject] private SelectedItem _item;
 
     private readonly string _healthTitle = "Health";
 
