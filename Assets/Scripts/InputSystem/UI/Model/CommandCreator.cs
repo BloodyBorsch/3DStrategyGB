@@ -13,6 +13,7 @@ namespace InputSystem
         [Inject] protected AssetsContext _context;
         [Inject] protected Vector3Value _currentGroundPosition;
         [Inject] protected SelectedItem _selectedItem;
+        [Inject] protected AttackableValue _target;
 
         public void CreateCommand(ICommandExecutor commandExecutor, Action<T> onCreate)
         {

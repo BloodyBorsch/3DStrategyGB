@@ -10,6 +10,14 @@ namespace Utils
         private static event Action OnFixedUpdateEvent;
         private static event Action OnLateUpdateEvent;
 
+        private static bool _isPaused = false;
+
+        public static void Pause()
+        {
+            _isPaused = !_isPaused;
+            Time.timeScale = (_isPaused == true) ? 0 : 1;            
+        }
+
         public static void SubscribeToUpdate(Action callback)
         {
             OnUpdateEvent += callback;            
@@ -42,17 +50,17 @@ namespace Utils
 
         private void Update()
         {
-            if (OnUpdateEvent != null) OnUpdateEvent.Invoke();
+            if (OnUpdateEvent != null && !_isPaused) OnUpdateEvent.Invoke();
         }
 
         private void FixedUpdate()
         {
-            if (OnFixedUpdateEvent != null) OnFixedUpdateEvent.Invoke();
+            if (OnFixedUpdateEvent != null && !_isPaused) OnFixedUpdateEvent.Invoke();
         }
 
         private void LateUpdate()
         {
-            if (OnLateUpdateEvent != null) OnLateUpdateEvent.Invoke();
+            if (OnLateUpdateEvent != null && !_isPaused) OnLateUpdateEvent.Invoke();
         }
     }
 }
