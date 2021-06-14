@@ -11,6 +11,11 @@ namespace Core
 
         private float _maxFloat = 1.0f;
 
+        public void MoveToPosition(Vector3 position)
+        {
+            _agent.SetDestination(position);
+        }
+
         private void Awake()
         {
             UpdateManager.SubscribeToUpdate(AnimationLocomotion);
@@ -23,9 +28,9 @@ namespace Core
 
         protected override void ExecuteConcreteCommand(IMoveCommand command)
         {
-            _command = command;            
-            _agent.SetDestination(_command.Position);            
-        }
+            _command = command;
+            MoveToPosition(_command.Position);
+        }       
 
         protected override void AnimationLocomotion()
         {

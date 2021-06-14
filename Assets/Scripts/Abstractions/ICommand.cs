@@ -11,6 +11,10 @@ namespace Abstractions
     public interface IProduceUnitCommand : ICommand
     {
         GameObject UnitPrefab { get; }
+        public Sprite Icon { get; }
+
+        public float ProductionTime { get; }
+        public float ProductionTimeLeft { get; }
     }    
 
     public interface IMoveCommand : ICommand

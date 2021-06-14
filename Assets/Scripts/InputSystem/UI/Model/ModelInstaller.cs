@@ -25,7 +25,8 @@ namespace Model
             Container.Bind<IAwaitable<Vector3>>().FromInstance(_currentGroundPosition).AsSingle();
             Container.Bind<IAwaitable<ISelectableItem>>().FromInstance(_currentSelectedItem).AsSingle();
             Container.Bind<IAwaitable<IAttackable>>().FromInstance(_currentTarget).AsSingle();            
-            Container.Bind<ButtonPanel>().AsTransient();
+            Container.Bind<ButtonPanel>().AsSingle();
+            Container.Bind<UnitProductionPanel>().AsSingle();
             Container.Bind<Vector3Value>().FromInstance(_currentGroundPosition).AsSingle();
             Container.Bind<SelectedItem>().FromInstance(_currentSelectedItem).AsSingle();
             Container.Bind<AttackableValue>().FromInstance(_currentTarget).AsSingle();

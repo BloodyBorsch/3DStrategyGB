@@ -5,17 +5,23 @@ using Zenject;
 
 
 namespace InputSystem
-{    
+{
     public class ProduceUnitCommand : IProduceUnitCommand
     {
-        [InjectAssetAttributes("Chomper")] private GameObject _unitPrefab;        
+        [InjectAssetAttributes("Chomper")] private GameObject _unitPrefab;
         public GameObject UnitPrefab => _unitPrefab;
+
+        [Inject(Id = "Chomper")] public Sprite Icon { get; }
+
+        [Inject(Id = "Chomper")] public float ProductionTime { get; }
+
+        public float ProductionTimeLeft { get; }
     }
 
     public class MoveUnitCommand : IMoveCommand
     {
         public Vector3 Position { get; }
-                
+
         public MoveUnitCommand(Vector3 position)
         {
             Position = position;

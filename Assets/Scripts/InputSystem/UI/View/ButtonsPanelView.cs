@@ -9,6 +9,11 @@ using TMPro;
 
 public class ButtonsPanelView : MonoBehaviour
 {
+    private const string _produceUnitText = "Produce Unit";
+    private const string _patrolText = "Patrol";
+    private const string _attackText = "Attack";
+    private const string _spawnPointText = "Spawn Point";
+
     [SerializeField] private Button _produceUnitButton;
     [SerializeField] private Button _moveButton;
     [SerializeField] private Button _attackButton;
@@ -44,10 +49,15 @@ public class ButtonsPanelView : MonoBehaviour
             {
                 if (button.GetComponentInChildren<TMP_Text>() != null)
                 {
-                    if (executor as CommandExecutorBase<IProduceUnitCommand>) 
-                        button.GetComponentInChildren<TMP_Text>().SetText("Produce Unit");
-                    if (executor as CommandExecutorBase<IPatrolCommand>) 
-                        button.GetComponentInChildren<TMP_Text>().SetText("Patrol");                    
+                    if (executor as CommandExecutorBase<IProduceUnitCommand>)
+                    {
+                        button.GetComponentInChildren<TMP_Text>().SetText(_produceUnitText);
+                    }
+                        
+                    if (executor as CommandExecutorBase<IPatrolCommand>)
+                    {
+                        button.GetComponentInChildren<TMP_Text>().SetText(_patrolText);
+                    }                                         
                 }
 
                 button.interactable = true;
