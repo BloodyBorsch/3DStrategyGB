@@ -15,6 +15,9 @@ namespace Core
         public float Health => _health;
         public float MaxHealth => _maxHealth;
 
-        public GameObject Target => transform.gameObject;
+        public void RecieveDamage(float value)
+        {
+            _health -= value;
+        }
     }
 }

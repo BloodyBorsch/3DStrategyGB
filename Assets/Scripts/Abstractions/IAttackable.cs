@@ -3,8 +3,9 @@
 
 namespace Abstractions
 {
-    public interface IAttackable 
+    public interface IAttackable : IHealthHolder
     {
-        GameObject Target { get; }
+        Vector3 Position { get; }
+        void RecieveDamage(float value);
     }
 }

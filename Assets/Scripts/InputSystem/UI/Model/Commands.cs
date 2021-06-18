@@ -6,7 +6,7 @@ using Zenject;
 
 namespace InputSystem
 {
-    public class ProduceUnitCommand : IProduceUnitCommand
+    public class ProduceUnitCommandChomper : IProduceUnitCommandChomper
     {
         [InjectAssetAttributes("Chomper")] private GameObject _unitPrefab;
         public GameObject UnitPrefab => _unitPrefab;

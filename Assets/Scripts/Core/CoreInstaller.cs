@@ -9,7 +9,8 @@ namespace Core
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<TimeModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<ProduceUnitExecutor>().FromComponentsInHierarchy().AsTransient();
+            Container.BindInterfacesAndSelfTo<ProduceUnitExecutorChomper>().FromComponentsInHierarchy().AsTransient();
+            Container.BindInterfacesAndSelfTo<AttackCommandExecutor>().FromComponentsInHierarchy().AsTransient();
         }
     }
 }

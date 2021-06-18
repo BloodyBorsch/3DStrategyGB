@@ -17,6 +17,11 @@ namespace Abstractions
         public float ProductionTimeLeft { get; }
     }    
 
+    public interface IProduceUnitCommandChomper : IProduceUnitCommand
+    {
+
+    }
+
     public interface IMoveCommand : ICommand
     {
         Vector3 Position { get; }

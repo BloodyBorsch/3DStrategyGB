@@ -30,10 +30,15 @@ namespace InputSystem
                 if (Physics.Raycast(ray, out hitInfo))
                 {
                     var selectableItem = hitInfo.collider.GetComponent<ISelectableItem>();
-                    _currentSelection.SetValue(selectableItem);
 
-                    var attackableObject = hitInfo.collider.GetComponent<IAttackable>();
-                    _currentTarget.SetValue(attackableObject);
+                    var fractionComponent = (selectableItem as Component).GetComponent<IFractionMember>();
+
+                    if (fractionComponent != null && fractionComponent.Id != 0)
+                    {
+                        return;
+                    }
+
+                    _currentSelection.SetValue(selectableItem);
                 }
                 else _currentSelection.SetValue(null);
             }
@@ -42,8 +47,24 @@ namespace InputSystem
             {
                 if (Physics.Raycast(ray, out hitInfo))
                 {
+                    var selectableItem = hitInfo.collider.GetComponent<ISelectableItem>();
+
+                    if (selectableItem != null)
+                    {
+                        var fractionComponent = (selectableItem as Component).GetComponent<IFractionMember>();
+
+                        if (fractionComponent != null && fractionComponent.Id != 0)
+                        {
+                            var attackable = (selectableItem as Component).GetComponent<IAttackable>();
+
+                            if (attackable != null)
+                            {
+                                _currentTarget.SetValue(attackable);
+                            }
+                        }
+                    }
                     _currentGroundPosition.SetValue(hitInfo.point);
-                }                
+                }
             }
         }
     }

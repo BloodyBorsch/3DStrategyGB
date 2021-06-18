@@ -7,7 +7,7 @@ namespace Model
 {
     public class ButtonPanel
     {
-        [Inject] private CommandCreatorBase<IProduceUnitCommand> _produceUnitCommandCreator;
+        [Inject] private CommandCreatorBase<IProduceUnitCommandChomper> _produceUnitCommandCreator;
         [Inject] private CommandCreatorBase<IMoveCommand> _moveCommandCreator;
         [Inject] private CommandCreatorBase<IAttackCommand> _attacklCommandCreator;
         [Inject] private CommandCreatorBase<IPatrolCommand> _patrolCommandCreator;

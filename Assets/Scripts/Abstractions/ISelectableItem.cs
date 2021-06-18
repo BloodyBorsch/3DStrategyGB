@@ -3,11 +3,9 @@ using UnityEngine;
 
 namespace Abstractions
 {
-    public interface ISelectableItem
+    public interface ISelectableItem : IHealthHolder
     {
         Vector3 Position { get; }
-        Sprite Icon { get; }
-        float Health { get; }
-        float MaxHealth { get; }   
+        Sprite Icon { get; }        
     }
 }

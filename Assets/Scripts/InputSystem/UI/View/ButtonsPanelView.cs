@@ -9,7 +9,7 @@ using TMPro;
 
 public class ButtonsPanelView : MonoBehaviour
 {
-    private const string _produceUnitText = "Produce Unit";
+    private const string _produceUnitText = "Produce Chomper";
     private const string _patrolText = "Patrol";
     private const string _attackText = "Attack";
     private const string _spawnPointText = "Spawn Point";
@@ -27,7 +27,7 @@ public class ButtonsPanelView : MonoBehaviour
     {       
         _buttons = new Dictionary<Type, Button>
         {
-            { typeof(CommandExecutorBase<IProduceUnitCommand>), _produceUnitButton },
+            { typeof(CommandExecutorBase<IProduceUnitCommandChomper>), _produceUnitButton },
             { typeof(CommandExecutorBase<IMoveCommand>), _moveButton },
             { typeof(CommandExecutorBase<IAttackCommand>), _attackButton },
             { typeof(CommandExecutorBase<IStopCommand>), _stopButton},
@@ -49,7 +49,7 @@ public class ButtonsPanelView : MonoBehaviour
             {
                 if (button.GetComponentInChildren<TMP_Text>() != null)
                 {
-                    if (executor as CommandExecutorBase<IProduceUnitCommand>)
+                    if (executor as CommandExecutorBase<IProduceUnitCommandChomper>)
                     {
                         button.GetComponentInChildren<TMP_Text>().SetText(_produceUnitText);
                     }
@@ -63,7 +63,7 @@ public class ButtonsPanelView : MonoBehaviour
                 button.interactable = true;
                 button.onClick.AddListener(() => OnClick?.Invoke(executor));
             }
-            else Debug.LogError("No button founded for executor " + executor.GetType());
+            else Debug.LogError("No button founded for executor " + executor.GetType()); 
         }
     }
 

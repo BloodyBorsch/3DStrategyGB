@@ -8,14 +8,14 @@ using Zenject;
 
 namespace Core
 {
-    public class ProduceUnitExecutor : CommandExecutorBase<IProduceUnitCommand>, ITickable, IUnitProducer
+    public abstract class ProduceUnitExecutorBase<T> : CommandExecutorBase<T>, ITickable, IUnitProducer where T : IProduceUnitCommand
     {
         private readonly float _offset = 2.0f;
 
         public IReactiveCollection<IUnitProductionTask> Queue => _queue;
         public IReactiveCollection<IUnitProductionTask> _queue = new ReactiveCollection<IUnitProductionTask>();        
 
-        protected override void ExecuteConcreteCommand(IProduceUnitCommand command)
+        protected override void ExecuteConcreteCommand(T command)
         {     
             if (command.UnitPrefab == null)
             {
@@ -36,7 +36,7 @@ namespace Core
             if (_queue.Count == 0) return;
 
             var currentTask = _queue[0];
-            currentTask.ProductionTimeLeft -= Math.Min(Time.deltaTime, currentTask.ProductionTimeLeft);
+            currentTask.ProductionTimeLeft.Value -= Math.Min(Time.deltaTime, currentTask.ProductionTimeLeft.Value);
 
             if (currentTask.ProductionTime <= 0)
             {

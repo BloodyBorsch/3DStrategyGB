@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Core
 {
-    public class BaseUnit : MonoBehaviour, ISelectableItem
+    public class BaseUnit : MonoBehaviour, ISelectableItem, IAttackable
     {
         [SerializeField] private Sprite _icon;
         [SerializeField] private float _health;
@@ -30,6 +30,17 @@ namespace Core
             if (GetComponent<ICommandExecutor>() != null) _executors = GetComponents<ICommandExecutor>();
 
             if (_executors != null) foreach (var executor in _executors) executor.CreateDependances(_agent, _animator);
+        }
+
+        public void RecieveDamage(float value)
+        {
+            _health -= value;
+
+            if (_health <= 0)
+            {
+                Debug.Log("Unit Dead");
+                Destroy(gameObject);
+            }
         }
     }
 }

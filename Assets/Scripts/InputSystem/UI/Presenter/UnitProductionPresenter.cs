@@ -20,7 +20,7 @@ namespace Presenter
 
         private void Start()
         {
-            _item.OnSelected += HandleSelectionChanged;            
+            _item.OnSelected += HandleSelectionChanged;
         }
 
         private void HandleSelectionChanged(ISelectableItem value)

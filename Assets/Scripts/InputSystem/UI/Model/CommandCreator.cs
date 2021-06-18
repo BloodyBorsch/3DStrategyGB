@@ -61,11 +61,11 @@ namespace InputSystem
         }
     }
 
-    public class ProduceUnitCommandCreator : CommandCreatorBase<IProduceUnitCommand>
+    public class ProduceChomperCommandCreator : CommandCreatorBase<IProduceUnitCommandChomper>
     {       
-        protected override void CreateSpecificCommand(Action<IProduceUnitCommand> onCreate)
+        protected override void CreateSpecificCommand(Action<IProduceUnitCommandChomper> onCreate)
         {
-            onCreate?.Invoke(_context.Inject(new ProduceUnitCommand()));
+            onCreate?.Invoke(_context.Inject(new ProduceUnitCommandChomper()));
         }
     }
 

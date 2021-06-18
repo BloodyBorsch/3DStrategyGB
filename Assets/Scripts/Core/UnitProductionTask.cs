@@ -1,5 +1,6 @@
 ﻿using Abstractions;
 using UnityEngine;
+using UniRx;
 
 
 namespace Core
@@ -10,16 +11,16 @@ namespace Core
 
         public float ProductionTime { get; }
 
-        public float ProductionTimeLeft { get; set; }
+        public ReactiveProperty<float> ProductionTimeLeft { get; set; }
 
         public GameObject UnitPrefab { get; }
 
         public UnitProductionTask(Sprite icon, float productionTime, GameObject unitPrefab)
         {
-            productionTime = 100;
+            productionTime = 4.0f;
             Icon = icon;
             ProductionTime = productionTime;
-            ProductionTimeLeft = productionTime;
+            ProductionTimeLeft = new ReactiveProperty<float>(productionTime);
             UnitPrefab = unitPrefab;
         }
     }
