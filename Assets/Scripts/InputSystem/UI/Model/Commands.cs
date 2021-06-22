@@ -17,6 +17,18 @@ namespace InputSystem
 
         public float ProductionTimeLeft { get; }
     }
+    
+    public class ProduceUnitCommandSpitter : IProduceUnitCommandSpitter
+    {
+        [InjectAssetAttributes("Spitter")] private GameObject _unitPrefab;
+        public GameObject UnitPrefab => _unitPrefab;
+
+        [Inject(Id = "Spitter")] public Sprite Icon { get; }
+
+        [Inject(Id = "Spitter")] public float ProductionTime { get; }
+
+        public float ProductionTimeLeft { get; }
+    }
 
     public class MoveUnitCommand : IMoveCommand
     {

@@ -7,7 +7,8 @@ namespace Model
 {
     public class ButtonPanel
     {
-        [Inject] private CommandCreatorBase<IProduceUnitCommandChomper> _produceUnitCommandCreator;
+        [Inject] private CommandCreatorBase<IProduceUnitCommandChomper> _produceChomperCommandCreator;
+        [Inject] private CommandCreatorBase<IProduceUnitCommandSpitter> _produceSpitterCommandCreator;
         [Inject] private CommandCreatorBase<IMoveCommand> _moveCommandCreator;
         [Inject] private CommandCreatorBase<IAttackCommand> _attacklCommandCreator;
         [Inject] private CommandCreatorBase<IPatrolCommand> _patrolCommandCreator;
@@ -21,7 +22,8 @@ namespace Model
 
             _isPending = true;
 
-            _produceUnitCommandCreator.CreateCommand(commandExecutor, command => ExecuteSpecificCommand(commandExecutor, command));
+            _produceChomperCommandCreator.CreateCommand(commandExecutor, command => ExecuteSpecificCommand(commandExecutor, command));
+            _produceSpitterCommandCreator.CreateCommand(commandExecutor, command => ExecuteSpecificCommand(commandExecutor, command));
             _moveCommandCreator.CreateCommand(commandExecutor, command => ExecuteSpecificCommand(commandExecutor, command));
             _attacklCommandCreator.CreateCommand(commandExecutor, command => ExecuteSpecificCommand(commandExecutor, command));
             _patrolCommandCreator.CreateCommand(commandExecutor, command => ExecuteSpecificCommand(commandExecutor, command));
@@ -37,7 +39,8 @@ namespace Model
         {
             if (!_isPending) return;
 
-            _produceUnitCommandCreator.CancelCommand();
+            _produceChomperCommandCreator.CancelCommand();
+            _produceSpitterCommandCreator.CancelCommand();
             _moveCommandCreator.CancelCommand();
             _attacklCommandCreator.CancelCommand();
             _patrolCommandCreator.CancelCommand();

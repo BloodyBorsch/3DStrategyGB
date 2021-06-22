@@ -21,6 +21,11 @@ namespace Abstractions
     {
 
     }
+    
+    public interface IProduceUnitCommandSpitter : IProduceUnitCommand
+    {
+
+    }
 
     public interface IMoveCommand : ICommand
     {

@@ -69,6 +69,14 @@ namespace InputSystem
         }
     }
 
+    public class ProduceSpitterCommandCreator : CommandCreatorBase<IProduceUnitCommandSpitter>
+    {       
+        protected override void CreateSpecificCommand(Action<IProduceUnitCommandSpitter> onCreate)
+        {
+            onCreate?.Invoke(_context.Inject(new ProduceUnitCommandSpitter()));
+        }
+    }
+
     public class MoveCommandCreator : CancelableCommandCreatorBase<IMoveCommand, Vector3>
     {         
         protected override IMoveCommand CreateSpecificCommand(Vector3 param)

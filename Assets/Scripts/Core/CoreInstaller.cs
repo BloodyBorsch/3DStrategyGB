@@ -10,6 +10,7 @@ namespace Core
         {
             Container.BindInterfacesAndSelfTo<TimeModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<ProduceUnitExecutorChomper>().FromComponentsInHierarchy().AsTransient();
+            Container.BindInterfacesAndSelfTo<ProduceUnitExecutorSpitter>().FromComponentsInHierarchy().AsTransient();
             Container.BindInterfacesAndSelfTo<AttackCommandExecutor>().FromComponentsInHierarchy().AsTransient();
         }
     }

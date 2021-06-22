@@ -18,6 +18,7 @@ namespace Model
         {
             Container.Bind<AssetsContext>().FromInstance(_context).AsSingle();
             Container.Bind<CommandCreatorBase<IProduceUnitCommandChomper>>().To<ProduceChomperCommandCreator>().AsTransient();
+            Container.Bind<CommandCreatorBase<IProduceUnitCommandSpitter>>().To<ProduceSpitterCommandCreator>().AsTransient();
             Container.Bind<CommandCreatorBase<IMoveCommand>>().To<MoveCommandCreator>().AsTransient();
             Container.Bind<CommandCreatorBase<IPatrolCommand>>().To<PatrolCommandCreator>().AsTransient();
             Container.Bind<CommandCreatorBase<IAttackCommand>>().To<AttackCommandCreator>().AsTransient();
