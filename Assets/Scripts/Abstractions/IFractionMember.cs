@@ -2,6 +2,6 @@
 {
     public interface IFractionMember
     {
-        int Id { get; }
+        FractionTeam Team { get; } 
     }
 }

@@ -14,11 +14,14 @@ namespace Abstractions
     {
         protected NavMeshAgent _agent;
         protected Animator _animator;
+
+        public ICommand CurrentCommand { get; protected set; }
         
         protected readonly string _speed = "Speed";
 
         public void Execute(ICommand command)
         {
+            CurrentCommand = command;
             ExecuteConcreteCommand((T)command);
         }
 

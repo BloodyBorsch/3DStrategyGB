@@ -7,7 +7,7 @@ namespace Core
 {
     public class MoveCommandExecutor : CommandExecutorBase<IMoveCommand>
     {
-        private IMoveCommand _command;
+        private IMoveCommand _command;        
 
         private float _maxFloat = 1.0f;
 
@@ -28,12 +28,17 @@ namespace Core
 
         protected override void ExecuteConcreteCommand(IMoveCommand command)
         {
-            _command = command;
+            _command = command;            
             MoveToPosition(_command.Position);
         }       
 
         protected override void AnimationLocomotion()
         {
+            if ((transform.position - _command.Position).magnitude <= 0.1f)
+            {
+                CurrentCommand = null;
+            }
+
             if (_animator != null && _command != null)
             {
                 if (_agent.remainingDistance > _agent.stoppingDistance)

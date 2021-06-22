@@ -8,7 +8,7 @@ using Zenject;
 
 namespace Core
 {
-    public partial class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>, ITickable
+    public partial class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>
     {
         private class AttackOperation : IAwaitable<AsyncExtensions.Void>
         {
@@ -46,7 +46,7 @@ namespace Core
                         attackerPosition = _attacker._attackerPosition;
                     }
 
-                    var distance = (targetPosition - attackerPosition).sqrMagnitude;
+                    var distance = (targetPosition - attackerPosition).magnitude;
 
                     if (distance > _attacker._attackDistance)
                     {

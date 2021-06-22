@@ -7,7 +7,7 @@ using UniRx;
 
 namespace Core
 {
-    public partial class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>, ITickable
+    public partial class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>
     {
         //TODO прокинуть значения
         [Inject(Id = "Distance")] private float _attackDistance = 1.0f;
@@ -34,6 +34,7 @@ namespace Core
             {
                 await _currentAttackOperation;
                 _currentAttackOperation = null;
+                CurrentCommand = null;
             }
             catch (OperationCanceledException e)
             {
@@ -53,9 +54,9 @@ namespace Core
             _attackTarget.ObserveOnMainThread().Subscribe(AttackTarget).AddTo(this);
         }
 
-        public void Tick()
+        public void Update()
         {
-            if (_target == null || _currentAttackOperation == null) return;
+            if (!gameObject.activeSelf || _target == null || _currentAttackOperation == null) return;
 
             lock (this)
             {
@@ -66,15 +67,16 @@ namespace Core
 
         private void MoveTo(Vector3 position)
         {
-            _agent.SetDestination(position);
+            if (gameObject.activeSelf && _agent.isActiveAndEnabled) _agent.SetDestination(position);
         }
 
         private void AttackTarget(IAttackable target)
         {
-            _agent.ResetPath();
+            if (_agent.isActiveAndEnabled) _agent.ResetPath();
+
             target.RecieveDamage(_attackDamage);
 
-            if (target.Health <= 0 || target == null)
+            if ((target.Health <= 0 || target == null) && _currentAttackOperation != null)
             {
                 _currentAttackOperation.Cancel();
                 _currentAttackOperation = null;

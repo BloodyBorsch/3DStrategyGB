@@ -33,7 +33,7 @@ namespace InputSystem
 
                     var fractionComponent = (selectableItem as Component).GetComponent<IFractionMember>();
 
-                    if (fractionComponent != null && fractionComponent.Id != 0)
+                    if (fractionComponent != null && fractionComponent.Team != FractionTeam.PlayerTeam)
                     {
                         return;
                     }
@@ -53,7 +53,7 @@ namespace InputSystem
                     {
                         var fractionComponent = (selectableItem as Component).GetComponent<IFractionMember>();
 
-                        if (fractionComponent != null && fractionComponent.Id != 0)
+                        if (fractionComponent != null && fractionComponent.Team != FractionTeam.PlayerTeam)
                         {
                             var attackable = (selectableItem as Component).GetComponent<IAttackable>();
 
